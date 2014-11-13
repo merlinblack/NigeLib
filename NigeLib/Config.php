@@ -2,22 +2,39 @@
 
 class Config extends Singleton {
     private $basedir;
+    private $commondir;
     private $environment;
     private $config = null;
 
-    public function init( $basedir, $environment ) {
+    public function init( $basedir, $environment, $commondir = '' ) {
         $this->basedir = $basedir;
         $this->environment = $environment;
+        $this->commondir = $commondir;
     }
 
     public function reload() { $this->load(); }
 
     private function load() {
-        // Default configuration
+        // If commondir is set, load this config first.
+        // This should contain things like database connection info for multiple
+        // applications.
+
+        if( $this->commondir != '' ) {
+            $this->loadfiles( $this->commondir );
+
+            // Environment override for common settings.
+            //
+            $envdir = $this->commondir . DIRECTORY_SEPARATOR . $this->environment;
+            if( file_exists( $envdir ) ) {
+                $this->loadfiles( $envdir );
+            }
+        }
+
+        // Default local configuration
         //
         $this->loadfiles( $this->basedir );
 
-        // Environment override
+        // Environment override for local configuration
         //
         $envdir = $this->basedir . DIRECTORY_SEPARATOR . $this->environment;
         if( file_exists( $envdir ) ) {
