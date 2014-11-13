@@ -9,7 +9,7 @@ use NigeLib\Console;
 Console::output( 'Test script for NigeLib.', Console::IMPORTAINT );
 
 
-NigeLib\Config::getSingleton()->init( 'config', NigeLib\Environment::getEnvironmentName() );
+NigeLib\Config::getSingleton()->init( 'localconfig', NigeLib\Environment::getEnvironmentName(), 'config' );
 
 $dbmgr = NigeLib\DatabaseConnectionManager::getSingleton();
 
