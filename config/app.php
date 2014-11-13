@@ -2,6 +2,6 @@
 
 return array(
 
-    // Some blurb on the options.
+    // Do debug stuff
     'debug' => false,
 );

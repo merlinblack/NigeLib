@@ -2,16 +2,22 @@
 
 return array(
 
-    // Some blurb on the options.
+    // Do debug stuff
     'debug' => true,
 
-    // Blah blah blah
+    // Database overrides for 'test' environment.
     //
 
     'database' => array(
         'connections' => array(
             'osp' => array(
-                'host' => 'opspg1.mailcall.com.au',
+                'host' => 'opspg-dev.mailcall.com.au',
+            ),
+            'mccmain' => array(
+                'host' => 'opspg-dev.mailcall.com.au',
+            ),
+            'mcs' => array(
+                'host' => 'opspg-dev.mailcall.com.au',
             ),
         ),
     ),
