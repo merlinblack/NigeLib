@@ -1,0 +1,3 @@
+[submodule "adLDAP"]
+	path = adLDAP
+	url = https://github.com/ztec/adLDAP.git
