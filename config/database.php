@@ -1,15 +1,44 @@
 <?php
+
 return array(
 
-    'default' => 'blog',
+    // Database
+    //
+    // Configuration for database connections.
+
+    'default' => 'osp',
 
     'connections' => array(
 
-        'blog' => array(
-            'host' => 'localhost',
-            'database' => 'test',
+        'osp' => array(
+            'host' => 'osp.db.mailcall.com.au',
+            'database' => 'osp',
             'user' => 'postgres',
             'password' => '',
+            'driver' => 'pgsql',
+        ),
+
+        'mccmain' => array(
+            'host' => 'mccmain.db.mailcall.com.au',
+            'database' => 'mccmain',
+            'user' => 'postgres',
+            'password' => '',
+            'driver' => 'pgsql',
+        ),
+
+        'mcs' => array(
+            'host' => 'mcs.db.mailcall.com.au',
+            'database' => 'mcs',
+            'user' => 'postgres',
+            'password' => '',
+            'driver' => 'pgsql',
+        ),
+
+        'gis' => array(
+            'host' => 'gis.db.mailcall.com.au',
+            'database' => 'mailcall',
+            'user' => 'postgres',
+            'password' => 'gis',
             'driver' => 'pgsql',
         ),
 
