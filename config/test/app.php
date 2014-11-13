@@ -10,8 +10,8 @@ return array(
 
     'database' => array(
         'connections' => array(
-            'blog' => array(
-                'host' => 'localhost',
+            'osp' => array(
+                'host' => 'opspg1.mailcall.com.au',
             ),
         ),
     ),

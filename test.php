@@ -15,3 +15,5 @@ $dbmgr = NigeLib\DatabaseConnectionManager::getSingleton();
 Console::debug( $dbmgr->get() );
 
 NigeLib\Config::getSingleton()->dump();
+
+$ad = new adLDAP\adLDAP;
