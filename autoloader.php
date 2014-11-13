@@ -8,6 +8,7 @@ $use_console = false;
 // Optional mapping of Namespace to directories.
 $namespace_mapping = array(
     'NigeLib' => 'src',
+    'adLDAP' => 'adLDAP/lib/adLDAP',
 );
 
 if( $use_console ) {
