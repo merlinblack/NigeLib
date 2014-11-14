@@ -36,8 +36,8 @@ return array(
 
         'gis' => array(
             'host' => 'gis.db.mailcall.com.au',
-            'database' => 'mailcall',
-            'user' => 'postgres',
+            'database' => 'gis',
+            'user' => 'mailcall',
             'password' => 'gis',
             'driver' => 'pgsql',
         ),
