@@ -2,7 +2,7 @@
 
 class Environment {
     private static $environments = array(
-        'live' => array( 'atkinson.kiwi' ),
+        'live' => array( 'extweb1.mailcall.com.au' ),
         'test' => array( 'supra' ),
     );
 
