@@ -1,0 +1,19 @@
+{
+    "name": "merlinblack/nigelib",
+    "description": "A tiny little library for tiny little web apps.",
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nigel Atkinson",
+            "email": "nigel@atkinson.kiwi"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "NigeLib\\": "NigeLib/"
+        }
+    }
+}
