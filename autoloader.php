@@ -2,7 +2,7 @@
 
 // Load console class for autoloader?
 
-$use_console = true;
+$use_console = false;
 
 
 // Optional mapping of Namespace to directories.
@@ -38,9 +38,8 @@ function PSR0_autoload($className)
         NigeLib\Console::output( "Loading: $fileName for class $className in $namespace" );
     }
 
-    if( file_exists( $fileName ) ) {
-        include $fileName;
-    } else if( $use_console ) {
+    $found = @include $fileName;
+    if( !$found && $use_console ) {
         NigeLib\Console::output( "Loading: $fileName does not exist." );
     }
 }
