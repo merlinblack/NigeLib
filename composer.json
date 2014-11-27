@@ -1,19 +1,19 @@
 {
     "name": "merlinblack/nigelib",
     "description": "A tiny little library for tiny little web apps.",
-    "require": {
-        "php": ">=5.3.0"
-    },
     "license": "MIT",
+    "type": "library",
     "authors": [
         {
             "name": "Nigel Atkinson",
             "email": "nigel@atkinson.kiwi"
         }
     ],
+    "require": {},
+    "suggest": {
+        "aura/sql": "Install for profiling, lazy connection and query tracking."
+    },
     "autoload": {
-        "psr-4": {
-            "NigeLib\\": "NigeLib/"
-        }
+        "psr-4": { "NigeLib\\": "src/" }
     }
 }
