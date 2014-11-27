@@ -9,7 +9,6 @@ $use_console = false;
 $namespace_mapping = array(
     'NigeLib' => 'src',
     'adLDAP' => 'adLDAP/lib/adLDAP',
-    'NigeLib' => 'src',
 );
 
 if( $use_console ) {
