@@ -9,6 +9,7 @@ $use_console = false;
 $namespace_mapping = array(
     'NigeLib' => 'src',
     'adLDAP' => 'adLDAP/lib/adLDAP',
+    'Aura\Sql' => 'aura/Aura.Sql/src',
 );
 
 if( $use_console ) {

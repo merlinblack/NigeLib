@@ -1,3 +1,6 @@
 [submodule "adLDAP"]
 	path = adLDAP
 	url = https://github.com/ztec/adLDAP.git
+[submodule "aura/Aura.Sql"]
+	path = aura/Aura.Sql
+	url = https://github.com/auraphp/Aura.Sql.git
