@@ -7,11 +7,11 @@ $use_console = true;
 
 // Optional mapping of Namespace to directories.
 $namespace_mapping = array(
-    //'NigeLib' => '.',
+    'NigeLib' => 'src',
 );
 
 if( $use_console ) {
-    require( 'NigeLib/Console.php' );
+    require( 'src/Console.php' );
 }
 
 function PSR0_autoload($className)
@@ -38,7 +38,11 @@ function PSR0_autoload($className)
         NigeLib\Console::output( "Loading: $fileName for class $className in $namespace" );
     }
 
-    require $fileName;
+    if( file_exists( $fileName ) ) {
+        include $fileName;
+    } else if( $use_console ) {
+        NigeLib\Console::output( "Loading: $fileName does not exist." );
+    }
 }
 
 spl_autoload_register( 'PSR0_autoload' );
