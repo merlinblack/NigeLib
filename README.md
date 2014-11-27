@@ -15,4 +15,5 @@ depending on the hostname of the machine running the code.
 The composer.json file allows use with composer, in which case the included
 autoloader should not be used - just use the composer generated one.
 
-Has a DB connection manager, with SQL statistics generation to come.
+Has a DB connection manager, with SQL query profiling via Aura/Sql if it is 
+also installed.
