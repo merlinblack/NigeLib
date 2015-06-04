@@ -41,5 +41,17 @@ class Console {
 
         echo $str;
     }
+    public static function info( $mixed ) {
+        self::output( print_r( $mixed, true ), self::INFO );
+    }
+    public static function debug( $mixed ) {
+        self::output( print_r( $mixed, true ), self::DEBUG );
+    }
+    public static function error( $mixed ) {
+        self::output( print_r( $mixed, true ), self::ERROR );
+    }
+    public static function important( $mixed ) {
+        self::output( print_r( $mixed, true ), self::IMPORTANT );
+    }
 }
 
