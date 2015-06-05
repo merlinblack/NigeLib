@@ -43,13 +43,18 @@ class Config extends Singleton {
     }
 
     private function loadfiles( $directory ) {
-        foreach( glob( $directory . DIRECTORY_SEPARATOR . '*.php' ) as $file ) {
-            $key = basename( $file, '.php' );
-            $options = include( $file );
-            if( ! isset( $this->config[ $key ] ) ) {
-                $this->config[ $key ] = array();
+        // Use directory iterator, and substr instead of glob, in case
+        // $directory is inside a Phar file.
+        $di = new \DirectoryIterator( $directory );
+        foreach( $di as $file ) {
+            if( substr($file,-4) === '.php' ) {
+                $key = basename( $file, '.php' );
+                $options = include( $directory . DIRECTORY_SEPARATOR . $file );
+                if( ! isset( $this->config[ $key ] ) ) {
+                    $this->config[ $key ] = array();
+                }
+                $this->config[ $key ] = array_replace_recursive( $this->config[ $key ], $options );
             }
-            $this->config[ $key ] = array_replace_recursive( $this->config[ $key ], $options );
         }
     }
 
