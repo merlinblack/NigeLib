@@ -6,7 +6,7 @@ use NigeLib\Console;
 
 //Console::setLevel( Console::DEBUG );
 
-Console::output( 'Test script for NigeLib.', Console::IMPORTAINT );
+Console::important( 'Test script for NigeLib.' );
 
 
 NigeLib\Config::getSingleton()->init( 'localconfig', NigeLib\Environment::getEnvironmentName(), 'config' );
