@@ -4,7 +4,7 @@ class Console {
     const INFO  = 1;
     const DEBUG = 2;
     const ERROR = 3;
-    const IMPORTAINT = 3;   // Same as error
+    const IMPORTANT = 3;   // Same as error
 
     private static $bash_colors = array(
         self::ERROR    =>   "\033[1;31m", // Light Red
