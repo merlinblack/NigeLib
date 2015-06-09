@@ -8,11 +8,10 @@ use NigeLib\Console;
 
 Console::important( 'Test script for NigeLib.' );
 
-
 NigeLib\Config::getSingleton()->init( 'localconfig', NigeLib\Environment::getEnvironmentName(), 'config' );
 
 $dbmgr = NigeLib\DatabaseConnectionManager::getSingleton();
 
-Console::print_r( $dbmgr->get(), Console::DEBUG );
+Console::debug( $dbmgr->get() );
 
 NigeLib\Config::getSingleton()->dump();
