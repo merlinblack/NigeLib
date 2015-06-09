@@ -56,6 +56,9 @@ class DatabaseConnectionManager extends Singleton {
 
         if( $dbname == '' ) {
             $dbname = Config::getSingleton()->get( $this->defaultDbKey );
+            if( $dbname === null ) {
+                throw new \Exception( "No default database set in configuration." );
+            }
         }
 
         if( ! isset( $this->connections[$dbname] ) ) {
