@@ -1,6 +1,4 @@
 <?php namespace NigeLib;
-// TODO!!!!
-// This is a work in progress.... converting to a class.
 
 class PharBuilder {
 
