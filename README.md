@@ -17,3 +17,6 @@ autoloader should not be used - just use the composer generated one.
 
 Has a DB connection manager, with SQL query profiling via Aura/Sql if it is 
 also installed.
+
+Latest feature is a class to aid in building command line utilities, as Phar files.
+See PharBuilder.php & phartest.php
