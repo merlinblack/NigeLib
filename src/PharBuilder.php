@@ -11,6 +11,8 @@ class PharBuilder {
     var $excludePrefixes = array(); // File prefixes to exclude from PHAR
     var $excludeSuffixes = array(); // File suffixes to exclude from PHAR
 
+    var $squash = 'stripWhitespace';
+
     function __construct( $filename, $startup, $basedir ) {
         $this->pharfile = $filename;
         $this->startfile = $startup;
@@ -18,11 +20,11 @@ class PharBuilder {
     }
 
     public function addExcludePrefix( $prefix ) {
-        array_push( $this->excludePrefixes );
+        array_push( $this->excludePrefixes, $prefix );
     }
 
     public function addExcludeSuffix( $suffix ) {
-        array_push( $this->excludeSuffixes );
+        array_push( $this->excludeSuffixes, $suffix );
     }
 
     public function prunePrefix( $files, $prefix )
@@ -100,34 +102,28 @@ class PharBuilder {
     public function compile() {
 
         @unlink( $this->pharfile );
-        $this->phar = new Phar($this->pharfile);
+        $this->phar = new \Phar($this->pharfile);
 
-        $fileIter = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator( $this->basedir, FileSystemIterator::SKIP_DOTS ) );
+        $fileIter = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator( $this->basedir, \FileSystemIterator::SKIP_DOTS ) );
 
         $files = iterator_to_array( $fileIter );
 
         foreach( $this->excludePrefixes as $prefix ) {
-            $files = prunePrefix( $files, $this->basedir . $prefix );
+            $files = $this->prunePrefix( $files, $this->basedir . $prefix );
         }
 
         foreach( $this->excludeSuffixes as $suffix ) {
-                $files = pruneSuffix( $files, $suffix );
+            $files = $this->pruneSuffix( $files, $suffix );
         }
 
-        if( $this->squash == 'keep' ) {
-            $squish = 'stripWhitespace';
-        } else if ( $this->squash = 'aggresive' ) {
-            $squish = 'stripWhitespaceAgressive';
-        } else {
-            $squish = 'nostrip';
-        }
+        $this->phar->startBuffering();
 
         foreach( $files as $file ) {
             $name = substr( $file, strlen( $this->basedir ) + 1 );
-            echo "Adding $name ...\n";
+            Console::info( "Adding $name ..." );
             if( substr( $file, -3 ) === 'php' ) {
-                $phar[$name] = $this->$squish(file_get_contents( $file ));
+                $phar[$name] = $this->{$this->squash}(file_get_contents( $file ));
             } else {
                 $phar[$name] = file_get_contents( $file );
             }
@@ -135,11 +131,16 @@ class PharBuilder {
 
         $this->addGITinfo();
         $this->addStub();
+        $this->phar->stopBuffering();
+
         $this->setExecutableBit();
     }
 
     private function addGITinfo() {
-        $this->phar['compiled.php'] = "<?php return array( 'date' => '" . date('Y-m-d H:i') . "', 'git'  => '" . system( 'git describe --all' ) . "',);";
+        $this->phar['compiled.php'] = "<?php return array( 'date' => '"
+            . date('Y-m-d H:i')
+            . "', 'git'  => '"
+            . system( "git -C {$this->basedir} describe --all" ) . "',);";
     }
 
     private function addStub() {
