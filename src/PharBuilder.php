@@ -4,10 +4,26 @@
 
 class PharBuilder {
 
-    var $pharfile = 'test.phar';
-    var $startfile = 'src/program.php';
+    var $pharfile;      // File name of the PHAR.
+    var $startfile;     // File to start the program
+    var $basedir;       // Base directory of the source tree.
 
-    var $basedir = dirname(dirname( __FILE__ ));
+    var $excludePrefixes = array(); // File prefixes to exclude from PHAR
+    var $excludeSuffixes = array(); // File suffixes to exclude from PHAR
+
+    function __construct( $filename, $startup, $basedir ) {
+        $this->pharfile = $filename;
+        $this->startfile = $startup;
+        $this->basedir = $basedir;
+    }
+
+    public function addExcludePrefix( $prefix ) {
+        array_push( $this->excludePrefixes );
+    }
+
+    public function addExcludeSuffix( $suffix ) {
+        array_push( $this->excludeSuffixes );
+    }
 
     public function prunePrefix( $files, $prefix )
     {
@@ -20,6 +36,7 @@ class PharBuilder {
         }
         return $newlist;
     }
+
     public function pruneSuffix( $files, $suffix )
     {
         $newlist = array();
@@ -76,28 +93,49 @@ class PharBuilder {
         return $output;
     }
 
+    private function nostrip( $source ) {
+        return $source;
+    }
+
     public function compile() {
+
         @unlink( $this->pharfile );
         $this->phar = new Phar($this->pharfile);
+
         $fileIter = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator( $this->basedir, FileSystemIterator::SKIP_DOTS ) );
+
         $files = iterator_to_array( $fileIter );
-        $files = prunePrefix( $files, $this->basedir . '/.git' );
-        $files = prunePrefix( $files, $this->basedir . '/build' );
-        $files = prunePrefix( $files, $this->basedir . '/composer' );
-        $files = prunePrefix( $files, $this->basedir . '/test.phar' );
-        $files = pruneSuffix( $files, 'swp' );
-        $files = pruneSuffix( $files, '~' );
+
+        foreach( $this->excludePrefixes as $prefix ) {
+            $files = prunePrefix( $files, $this->basedir . $prefix );
+        }
+
+        foreach( $this->excludeSuffixes as $suffix ) {
+                $files = pruneSuffix( $files, $suffix );
+        }
+
+        if( $this->squash == 'keep' ) {
+            $squish = 'stripWhitespace';
+        } else if ( $this->squash = 'aggresive' ) {
+            $squish = 'stripWhitespaceAgressive';
+        } else {
+            $squish = 'nostrip';
+        }
 
         foreach( $files as $file ) {
             $name = substr( $file, strlen( $this->basedir ) + 1 );
             echo "Adding $name ...\n";
             if( substr( $file, -3 ) === 'php' ) {
-                $phar[$name] = stripWhitespaceAgressive(file_get_contents( $file ));
+                $phar[$name] = $this->$squish(file_get_contents( $file ));
             } else {
                 $phar[$name] = file_get_contents( $file );
             }
         }
+
+        $this->addGITinfo();
+        $this->addStub();
+        $this->setExecutableBit();
     }
 
     private function addGITinfo() {
@@ -110,7 +148,6 @@ class PharBuilder {
 <?php
 Phar::mapPhar( '{$this->pharfile}' );
 set_include_path( 'phar://{$this->pharfile}' . PATH_SEPARATOR . get_include_path() );
-
 require('{$this->startfile}');
 __HALT_COMPILER();
 EOT;
