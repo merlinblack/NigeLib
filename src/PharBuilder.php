@@ -121,9 +121,9 @@ class PharBuilder {
             $name = substr( $file, strlen( $this->basedir ) + 1 );
             Console::info( "Adding $name ..." );
             if( substr( $file, -3 ) === 'php' ) {
-                $phar[$name] = $this->{$this->squash}(file_get_contents( $file ));
+                $this->phar[$name] = $this->{$this->squash}(file_get_contents( $file ));
             } else {
-                $phar[$name] = file_get_contents( $file );
+                $this->phar[$name] = file_get_contents( $file );
             }
         }
 
