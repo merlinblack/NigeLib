@@ -8,7 +8,7 @@ use NigeLib\Console;
 
 Console::important( 'Test script for NigeLib.' );
 
-NigeLib\Config::getSingleton()->init( 'localconfig', NigeLib\Environment::getEnvironmentName(), 'config' );
+NigeLib\Config::getSingleton()->init( 'localconfig', NigeLib\Environment::getEnvironmentName('envmap.php'), 'config' );
 
 $dbmgr = NigeLib\DatabaseConnectionManager::getSingleton();
 
