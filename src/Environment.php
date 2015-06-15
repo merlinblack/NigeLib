@@ -1,12 +1,12 @@
 <?php namespace NigeLib;
 
 class Environment {
-    private static $environments = array(
-        'live' => array( 'extweb1.mailcall.com.au' ),
-        'test' => array( 'supra' ),
-    );
+    private static $environments;
 
     public static function getEnvironmentName() {
+        if( self::$environments === null ) {
+            self::$environments = include( 'envmap.php' );
+        }
 
         $localhost = gethostname();
 
