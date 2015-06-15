@@ -3,9 +3,9 @@
 class Environment {
     private static $environments;
 
-    public static function getEnvironmentName() {
+    public static function getEnvironmentName( $mapfile ) {
         if( self::$environments === null ) {
-            self::$environments = include( 'envmap.php' );
+            self::$environments = include( $mapfile );
         }
 
         $localhost = gethostname();
