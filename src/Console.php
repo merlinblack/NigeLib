@@ -32,7 +32,11 @@ class Console {
             return;
         }
         if( php_sapi_name() == 'cli' ) {
-            $str = self::$bash_colors[$level] . $str . self::$bash_colors[0] . "\n";
+            if( posix_isatty( STDOUT ) ) {
+                $str = self::$bash_colors[$level] . $str . self::$bash_colors[0] . "\n";
+            } else {
+                $str .= "\n";
+            }
         } else {
             $color = self::$html_colors[$level];
             $str = str_replace( "\n", '<br/>', htmlentities( $str ));
