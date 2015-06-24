@@ -1,6 +1,8 @@
 <?php namespace NigeLib;
 
-class Config extends Singleton {
+use \ArrayAccess;
+
+class Config extends Singleton implements ArrayAccess {
     private $basedir;
     private $commondir;
     private $environment;
@@ -61,6 +63,20 @@ class Config extends Singleton {
     public function dump() {
         Console::output( "Configuration for {$this->environment} environment\n", Console::DEBUG );
         Console::print_r( $this->config, Console::DEBUG );
+    }
+
+    public function offsetSet( $offset, $value ) {
+    }
+
+    public function offsetUnset( $offset ) {
+    }
+
+    public function offsetExists( $offset ) {
+        return $this->get( $offset ) !== null;
+    }
+
+    public function offsetGet( $offset ) {
+        return $this->get( $offset );
     }
 
     public function get( $index, $default = null ) {

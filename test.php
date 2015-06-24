@@ -8,12 +8,14 @@ use NigeLib\Console;
 
 Console::important( 'Test script for NigeLib.' );
 
-NigeLib\Config::getSingleton()->init( 'localconfig', NigeLib\Environment::getEnvironmentName('envmap.php'), 'config' );
-
+$cfg = NigeLib\Config::getSingleton();
 $dbmgr = NigeLib\DatabaseConnectionManager::getSingleton();
+
+$cfg->init( 'localconfig', NigeLib\Environment::getEnvironmentName('envmap.php'), 'config' );
+
 
 Console::debug( $dbmgr->get() );
 
-NigeLib\Config::getSingleton()->dump();
+$cfg->dump();
 
-$ad = new adLDAP\adLDAP;
+Console::info( $cfg['app.logfile'] );
