@@ -138,7 +138,7 @@ class PharBuilder {
         $this->phar['compiled.php'] = "<?php return array( 'date' => '"
             . date('Y-m-d H:i')
             . "', 'git'  => '"
-            . system( "git -C {$this->basedir} describe --all" ) . "',);";
+            . system( "git -C {$this->basedir} describe --tags" ) . "',);";
     }
 
     private function addStub() {
