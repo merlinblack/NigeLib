@@ -54,17 +54,24 @@ class Config extends Singleton implements ArrayAccess {
         // $directory is inside a Phar file.
         $di = new \DirectoryIterator( $directory );
         foreach( $di as $file ) {
+            $options = null;
+
             if( substr($file,-4) === '.php' ) {
                 $key = basename( $file, '.php' );
                 $options = include( $directory . DIRECTORY_SEPARATOR . $file );
-                if( ! isset( $this->config[ $key ] ) ) {
-                    $this->config[ $key ] = array();
-                }
-                $this->config[ $key ] = array_replace_recursive( $this->config[ $key ], $options );
             }
+
             if( $this->useYAML && substr( $file, -4 ) == '.yml' ) {
                 $key = basename( $file, '.yml' );
                 $options = Yaml::parse( file_get_contents( $directory . DIRECTORY_SEPARATOR . $file ) );
+            }
+
+            if( $this->useYAML && substr( $file, -5 ) == '.yaml' ) {
+                $key = basename( $file, '.yaml' );
+                $options = Yaml::parse( file_get_contents( $directory . DIRECTORY_SEPARATOR . $file ) );
+            }
+
+            if( $options ) {
                 if( ! isset( $this->config[ $key ] ) ) {
                     $this->config[ $key ] = array();
                 }
