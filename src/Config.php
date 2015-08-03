@@ -1,17 +1,22 @@
 <?php namespace NigeLib;
 
 use \ArrayAccess;
+use \Symfony\Component\Yaml\Yaml;
 
 class Config extends Singleton implements ArrayAccess {
     private $basedir;
     private $commondir;
     private $environment;
     private $config = null;
+    private $useYAML = false;
 
     public function init( $basedir, $environment, $commondir = '' ) {
         $this->basedir = $basedir;
         $this->environment = $environment;
         $this->commondir = $commondir;
+        if( class_exists( 'Symfony\Component\Yaml\Yaml' ) ) {
+            $this->useYAML = true;
+        }
     }
 
     public function reload() { $this->load(); }
@@ -52,6 +57,14 @@ class Config extends Singleton implements ArrayAccess {
             if( substr($file,-4) === '.php' ) {
                 $key = basename( $file, '.php' );
                 $options = include( $directory . DIRECTORY_SEPARATOR . $file );
+                if( ! isset( $this->config[ $key ] ) ) {
+                    $this->config[ $key ] = array();
+                }
+                $this->config[ $key ] = array_replace_recursive( $this->config[ $key ], $options );
+            }
+            if( $this->useYAML && substr( $file, -4 ) == '.yml' ) {
+                $key = basename( $file, '.yml' );
+                $options = Yaml::parse( file_get_contents( $directory . DIRECTORY_SEPARATOR . $file ) );
                 if( ! isset( $this->config[ $key ] ) ) {
                     $this->config[ $key ] = array();
                 }
