@@ -9,9 +9,9 @@
             "email": "nigel@atkinson.kiwi"
         }
     ],
-    "require": {},
     "suggest": {
-        "aura/sql": "Install for profiling, lazy connection and query tracking."
+        "aura/sql": "Install for profiling, lazy connection and query tracking.",
+        "symfony/yaml": "Install to use YAML files with the Config class."
     },
     "autoload": {
         "psr-4": { "NigeLib\\": "src/" }
