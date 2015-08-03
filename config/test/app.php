@@ -7,12 +7,4 @@ return array(
 
     // Blah blah blah
     //
-
-    'database' => array(
-        'connections' => array(
-            'blog' => array(
-                'host' => 'localhost',
-            ),
-        ),
-    ),
 );
