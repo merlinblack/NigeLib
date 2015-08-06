@@ -6,17 +6,16 @@ return array(
     'connections' => array(
 
         'blog' => array(
+            'driver' => 'pgsql',
             'host' => 'localhost',
             'database' => 'test',
             'user' => 'postgres',
             'password' => '',
-            'driver' => 'pgsql',
         ),
 
         'temp' => array(
-            'database' => ':memory:',
-            'prefix' => '',
             'driver' => 'sqlite',
+            'filename' => ':memory:',
         ),
     ),
 );

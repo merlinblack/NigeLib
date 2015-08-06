@@ -22,16 +22,26 @@ class DatabaseConnectionManager extends Singleton {
         $cfg = Config::getSingleton()->get( $this->configKey );
 
         $cfg = $cfg[$dbname];
+        if( ! $cfg ) {
+            throw new \Exception( "No configuration found for connection '$dbname'" );
+        }
 
         switch( $cfg['driver'] ) {
 
         case 'pgsql':
-            $connstr = "pgsql:host={$cfg['host']} dbname={$cfg['database']}";
+        case 'mysql':
+            $connstr = "{$cfg['driver']}:host={$cfg['host']} dbname={$cfg['database']} {$cfg['additional_dsn']}";
+            if( isset($cfg['port'] ) ) {
+                $connstr .= 'port=' . $cfg['port'];
+            }
             break;
 
-        case 'sqlite';
-            // TODO:
+        case 'sqlite':
+            $connstr = "sqlite:{$cfg['filename']}";
             break;
+
+        default:
+            throw new \Exception( "Unsupported driver '{$cfg['driver']} given for connection '$dbname'." );
         }
 
         if( class_exists( "Aura\Sql\ExtendedPdo" ) ) {
@@ -54,6 +64,10 @@ class DatabaseConnectionManager extends Singleton {
 
     public function get( $dbname = '' ) {
 
+        if( ! $this ) {
+            return self::getSingleton()->get( $dbname );
+        }
+
         if( $dbname == '' ) {
             $dbname = Config::getSingleton()->get( $this->defaultDbKey );
             if( $dbname === null ) {
@@ -69,7 +83,7 @@ class DatabaseConnectionManager extends Singleton {
     }
 
     public function __destruct() {
-        if( class_exists( "Aura\Sql\ExtendedPdo" ) ) {
+        if( class_exists( "Aura\Sql\ExtendedPdo", false ) ) {
 
             $cfg = Config::getSingleton();
 
