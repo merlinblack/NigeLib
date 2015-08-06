@@ -1,9 +1,8 @@
 <?php namespace NigeLib;
 
-use \ArrayAccess;
 use \Symfony\Component\Yaml\Yaml;
 
-class Config extends Singleton implements ArrayAccess {
+class Config extends Singleton {
     private $basedir;
     private $commondir;
     private $environment;
@@ -85,21 +84,14 @@ class Config extends Singleton implements ArrayAccess {
         Console::print_r( $this->config, Console::DEBUG );
     }
 
-    public function offsetSet( $offset, $value ) {
-    }
-
-    public function offsetUnset( $offset ) {
-    }
-
-    public function offsetExists( $offset ) {
-        return $this->get( $offset ) !== null;
-    }
-
-    public function offsetGet( $offset ) {
-        return $this->get( $offset );
+    public function __invoke( $index ) {
+        return $this->get( $index );
     }
 
     public function get( $index, $default = null ) {
+        if( ! $this ) {   // Called statically
+            return self::getSingleton()->get( $index, $default );
+        }
 
         if( $this->config == null ) {
             $this->load();
