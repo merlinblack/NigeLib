@@ -9,7 +9,7 @@
 
 A tiny PHP library for use in tiny little web apps.
 
-Has PSR0 autoloader, Laravel style config files that can be modified automatically
+Has a PSR0 autoloader, Laravel style config files that can be modified automatically
 depending on the hostname of the machine running the code.
 
 The composer.json file allows use with composer, in which case the included
