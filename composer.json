@@ -3,12 +3,16 @@
     "description": "A tiny little library for tiny little web apps.",
     "license": "MIT",
     "type": "library",
+    "homepage": "https://github.com/merlinblack/NigeLib",
     "authors": [
         {
             "name": "Nigel Atkinson",
             "email": "nigel@atkinson.kiwi"
         }
     ],
+    "require": {
+        "php": ">=5.3.0"
+    },
     "suggest": {
         "aura/sql": "Install for profiling, lazy connection and query tracking.",
         "symfony/yaml": "Install to use YAML files with the Config class."
