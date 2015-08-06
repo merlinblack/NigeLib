@@ -81,7 +81,7 @@ class Config extends Singleton {
 
     public function dump() {
         Console::output( "Configuration for {$this->environment} environment\n", Console::DEBUG );
-        Console::print_r( $this->config, Console::DEBUG );
+        Console::debug( $this->config );
     }
 
     public function __invoke( $index ) {

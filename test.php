@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+$autoloader_use_console = true;
 require_once( 'autoloader.php' );
 
 use NigeLib\Config;
@@ -10,12 +11,12 @@ use NigeLib\DatabaseConnectionManager;
 Console::important( 'Test script for NigeLib.' );
 
 $cfg = Config::getSingleton();
-$dbmgr = DatabaseConnectionManager::getSingleton();
-
 $cfg->init( 'localconfig', Environment::getEnvironmentName('envmap.php'), 'config' );
 
 $cfg->reload();
 $cfg->dump();
+
+Console::debug( DatabaseConnectionManager::get('temp') );
 
 // __invoke style
 Console::info( $cfg('app.logfile') );
