@@ -2,20 +2,23 @@
 <?php
 require_once( 'autoloader.php' );
 
+use NigeLib\Config;
 use NigeLib\Console;
-
-//Console::setLevel( Console::DEBUG );
+use NigeLib\Environment;
+use NigeLib\DatabaseConnectionManager;
 
 Console::important( 'Test script for NigeLib.' );
 
-$cfg = NigeLib\Config::getSingleton();
-$dbmgr = NigeLib\DatabaseConnectionManager::getSingleton();
+$cfg = Config::getSingleton();
+$dbmgr = DatabaseConnectionManager::getSingleton();
 
-$cfg->init( 'localconfig', NigeLib\Environment::getEnvironmentName('envmap.php'), 'config' );
+$cfg->init( 'localconfig', Environment::getEnvironmentName('envmap.php'), 'config' );
 
-
-Console::debug( $dbmgr->get() );
-
+$cfg->reload();
 $cfg->dump();
 
-Console::info( $cfg['app.logfile'] );
+// __invoke style
+Console::info( $cfg('app.logfile') );
+
+// Weird call a non static like a static
+Console::info( Config::get('app.logfile') );
