@@ -1,0 +1,9 @@
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)\.[\d]+\.(js|css)$ $1.$2 [L] # Strip out the version number
+
+ExpiresActive on
+ExpiresByType application/javascript "now plus 1 year"
+ExpiresByType application/x-javascript "now plus 1 year"
+ExpiresByType text/javascript "now plus 1 year"
+ExpiresByType text/css "now plus 1 year"
