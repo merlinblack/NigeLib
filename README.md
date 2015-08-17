@@ -7,9 +7,13 @@
          |___/                    
 ```
 
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+
 A tiny PHP library for use in tiny little web apps.
 
 AKA my collection of useful little things.
+
+## About
 
 Has Laravel style configuration files that can be switched automatically
 depending on the hostname of the machine running the code.
@@ -32,3 +36,13 @@ to reload the file if it has changed. Dependencies can be defined between files,
 to not only make sure that a dependency is included as well, but also included
 beforehand. To use this you will need to use mod_rewrite or equivalent with
 something like the contents of src/Headlinks.htaccess.
+
+## Install
+
+Via Composer
+
+``` bash
+$ composer require merlinblack/nigelib
+```
+
+Or use git to clone.
