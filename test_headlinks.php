@@ -2,9 +2,10 @@
 // Note: The access directory is not included in the git repo to keep the size
 // down. However this serves to demonstrate the Headlinks class.
 require('autoloader.php');
-$headlinks = new Headlinks(
+$headlinks = new NigeLib\Headlinks(
     array(
-        'assets/jquery/ui/jquery-ui.js' => array( 'assets/jquery/jquery.js' ),
+        'assets/jquery/ui/jquery-ui.js' => array( 'assets/jquery/jquery.js', 'assets/jquery/themes/base/jquery-ui.css' ),
+        'assets/jquery/themes/base/jquery-ui.css' => array( 'assets/jquery/ui/jquery-ui.js' ),
         'assets/test.1.2.3.js' => array( 'assets/jquery/jquery.js', 'assets/jquery/ui/jquery-ui.js' ),
     )
 );
