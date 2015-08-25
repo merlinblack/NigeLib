@@ -57,6 +57,12 @@ class DatabaseConnectionManager extends Singleton {
 
         } else {
 
+            if( ! isset( $cfg['user'] ) ) {
+                $cfg['user'] = '';
+            }
+            if( ! isset( $cfg['password'] ) ) {
+                $cfg['password'] = '';
+            }
             $this->connections[$dbname] = new PDO( $connstr, $cfg['user'], $cfg['password'] );
 
         }
@@ -64,7 +70,7 @@ class DatabaseConnectionManager extends Singleton {
 
     public function get( $dbname = '' ) {
 
-        if( ! $this ) {
+        if( ! isset($this) ) {
             return self::getSingleton()->get( $dbname );
         }
 
