@@ -89,7 +89,7 @@ class Config extends Singleton {
     }
 
     public function get( $index, $default = null ) {
-        if( ! $this ) {   // Called statically
+        if( ! isset($this) ) {   // Called statically
             return self::getSingleton()->get( $index, $default );
         }
 
