@@ -24,7 +24,9 @@ class Headlinks {
             }
         }
 
-        $this->files[] = $file;
+        if( $file[0] != '$' ) {     // Don't actually add virtual dependencies.
+            $this->files[] = $file;
+        }
 
         array_pop( $this->pending );
     }
