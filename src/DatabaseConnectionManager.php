@@ -30,6 +30,9 @@ class DatabaseConnectionManager extends Singleton {
 
         case 'pgsql':
         case 'mysql':
+            if( ! isset( $cfg['additional_dsn'] ) ) {
+                $cfg['additional_dsn'] = '';
+            }
             $connstr = "{$cfg['driver']}:host={$cfg['host']} dbname={$cfg['database']} {$cfg['additional_dsn']}";
             if( isset($cfg['port'] ) ) {
                 $connstr .= 'port=' . $cfg['port'];
