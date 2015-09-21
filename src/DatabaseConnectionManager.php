@@ -47,6 +47,13 @@ class DatabaseConnectionManager extends Singleton {
             throw new \Exception( "Unsupported driver '{$cfg['driver']} given for connection '$dbname'." );
         }
 
+        if( ! isset( $cfg['user'] ) ) {
+            $cfg['user'] = '';
+        }
+        if( ! isset( $cfg['password'] ) ) {
+            $cfg['password'] = '';
+        }
+
         if( class_exists( "Aura\Sql\ExtendedPdo" ) ) {
 
             $conn = new ExtendedPdo( $connstr, $cfg['user'], $cfg['password'] );
@@ -60,12 +67,6 @@ class DatabaseConnectionManager extends Singleton {
 
         } else {
 
-            if( ! isset( $cfg['user'] ) ) {
-                $cfg['user'] = '';
-            }
-            if( ! isset( $cfg['password'] ) ) {
-                $cfg['password'] = '';
-            }
             $this->connections[$dbname] = new PDO( $connstr, $cfg['user'], $cfg['password'] );
 
         }
