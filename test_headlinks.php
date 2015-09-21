@@ -1,5 +1,5 @@
 <?php
-// Note: The access directory is not included in the git repo to keep the size
+// Note: The assets directory is not included in the git repo to keep the size
 // down. However this serves to demonstrate the Headlinks class.
 require('autoloader.php');
 $headlinks = new NigeLib\Headlinks(
