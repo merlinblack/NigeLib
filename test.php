@@ -27,8 +27,9 @@ Console::info( Config::get('app.logfile') );
 
 $t = new SimpleTemplate( 'template.php' );
 
+$t->title = 'Very Simple Template';
+$t['text'] = 'Yep. Pretty simple! If you want more use Twig or something.';
+
 echo $t->render( array(
-    'title' => 'Very Simple Template',
-    'text' => 'Yep. Pretty simple! If you want more use Twig or something.',
     'src' => htmlspecialchars(file_get_contents( 'template.php' )),
 ));
