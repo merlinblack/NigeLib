@@ -6,25 +6,36 @@ use \Exception;
 class SimpleTemplate implements ArrayAccess
 {
     private $filename;
+    private $source;
     private $parameters = array();
 
-    public function __construct( $filename ) {
+    public function __construct( $filename = null, $source = null ) {
         $this->filename = $filename;
+        $this->source = $source;
     }
 
     public function setParameters( array $parameters ) {
         $this->parameters = $parameters;
+        return $this;
+    }
+
+    public function setSource( $source ) {
+        $this->source = $source;
+        return $this;
     }
 
     public function render( array $extra_parameters = array() ) {
 
-        if( ! is_readable( $this->filename ) ) {
-            return false;
+        if( $this->source == '' ) {
+            if( ! is_readable( $this->filename ) ) {
+                return false;
+            }
+            $this->source = file_get_contents( $this->filename );
         }
 
-        $parameters = array_merge( $this->parameters, $extra_parameters );
+        $parameters = array_merge_recursive( $this->parameters, $extra_parameters );
 
-        return SimpleTemplateRender( $this->filename, $parameters );
+        return SimpleTemplateRender( $this->source, $parameters );
     }
 
     // ArrayAccess
@@ -71,9 +82,9 @@ class SimpleTemplate implements ArrayAccess
 }
 
 // Scope limiting function.
-function SimpleTemplateRender( $filename, $parameters ) {
+function SimpleTemplateRender( $source, $parameters ) {
     extract( $parameters );
     ob_start();
-    include( $filename );
+    eval( '?>' . $source );
     return ob_get_clean();
 }
