@@ -63,6 +63,11 @@ class SimpleTemplate implements ArrayAccess
     public function __unset( $key ) {
         unset( $this->parameters[$key] );
     }
+
+    // Using class as a string renders it.
+    public function __tostring() {
+        return $this->render();
+    }
 }
 
 // Scope limiting function.
