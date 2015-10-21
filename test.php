@@ -24,12 +24,3 @@ Console::info( $cfg('app.logfile') );
 
 // Weird call a non static like a static
 Console::info( Config::get('app.logfile') );
-
-$t = new SimpleTemplate( 'template.php' );
-
-$t->title = 'Very Simple Template';
-$t['text'] = 'Yep. Pretty simple! If you want more use Twig or something.';
-
-echo $t->render( array(
-    'src' => htmlspecialchars(file_get_contents( 'template.php' )),
-));
