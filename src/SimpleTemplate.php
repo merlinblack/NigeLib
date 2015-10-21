@@ -24,18 +24,26 @@ class SimpleTemplate implements ArrayAccess
         return $this;
     }
 
+    // Call this to load the code, if calling render several times.
+    public function preload() {
+        $this->source = file_get_contents( $this->filename );
+        return $this;
+    }
+
     public function render( array $extra_parameters = array() ) {
+
+        $parameters = array_merge_recursive( $this->parameters, $extra_parameters );
 
         if( $this->source == '' ) {
             if( ! is_readable( $this->filename ) ) {
                 return false;
             }
-            $this->source = file_get_contents( $this->filename );
+            // This is easier to debug than eval'd code.
+            return SimpleTemplateRenderFile( $this->filename, $parameters );
         }
 
-        $parameters = array_merge_recursive( $this->parameters, $extra_parameters );
 
-        return SimpleTemplateRender( $this->source, $parameters );
+        return SimpleTemplateRenderSource( $this->source, $parameters );
     }
 
     // ArrayAccess
@@ -81,8 +89,15 @@ class SimpleTemplate implements ArrayAccess
     }
 }
 
-// Scope limiting function.
-function SimpleTemplateRender( $source, $parameters ) {
+// Scope limiting functions.
+function SimpleTemplateRenderFile( $filename, $parameters ) {
+    extract( $parameters );
+    ob_start();
+    include( $filename );
+    return ob_get_clean();
+}
+
+function SimpleTemplateRenderSource( $source, $parameters ) {
     extract( $parameters );
     ob_start();
     eval( '?>' . $source );
