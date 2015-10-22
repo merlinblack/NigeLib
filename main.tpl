@@ -2,6 +2,7 @@
 <html>
  <head>
   <title><?=$title?></title>
+<?=$headlinks?>
  </head>
  <body>
   <h1><?=$title?></h1>
