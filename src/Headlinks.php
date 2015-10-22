@@ -12,9 +12,9 @@ class Headlinks {
     public function addFile( $file ) {
         // Guard against cyclic dependencies
         if( in_array( $file, $this->pending ) === true )
-            return;
+            return $this;
         if( in_array( $file, $this->files ) === true )
-            return;
+            return $this;
 
         array_push( $this->pending, $file );
 
@@ -29,6 +29,7 @@ class Headlinks {
         }
 
         array_pop( $this->pending );
+        return $this;
     }
 
     public function getLinks() {
@@ -45,6 +46,10 @@ class Headlinks {
             }
         }
         return $styles . $scripts;
+    }
+
+    public function __toString() {
+        return $this->getLinks();
     }
 }
 

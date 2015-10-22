@@ -2,10 +2,15 @@
 include( 'autoloader.php' );
 
 use NigeLib\SimpleTemplate;
+use NigeLib\Headlinks;
 
 $main = new SimpleTemplate( 'main.tpl' );
 
 $main->title = 'Motorbike clothing for sale';
+$main->headlinks = (new Headlinks())
+                 ->addFile( 'assets/jquery/jquery.js' )
+                 ->addFile( 'assets/moment.js' )
+                 ->addFile( 'assets/style.css' );
 
 $main->items = new SimpleTemplate( null, '
 <ul>
