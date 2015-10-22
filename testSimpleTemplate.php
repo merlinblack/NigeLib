@@ -4,7 +4,7 @@ include( 'autoloader.php' );
 use NigeLib\SimpleTemplate;
 use NigeLib\Headlinks;
 
-$main = new SimpleTemplate( 'main.tpl' );
+$main = new SimpleTemplate( 'assets/main.tpl' );
 
 $main->title = 'Motorbike clothing for sale';
 $main->headlinks = (new Headlinks())
