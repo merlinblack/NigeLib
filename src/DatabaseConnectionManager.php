@@ -58,8 +58,6 @@ class DatabaseConnectionManager extends Singleton {
 
             $conn = new ExtendedPdo( $connstr, $cfg['user'], $cfg['password'] );
 
-            $this->connections[$dbname] = $conn;
-
             if( isset( $cfg['profiling'] ) && $cfg['profiling'] == true ) {
                 $conn->setProfiler( new Profiler );
                 $conn->getProfiler()->setActive( true );
@@ -67,9 +65,16 @@ class DatabaseConnectionManager extends Singleton {
 
         } else {
 
-            $this->connections[$dbname] = new PDO( $connstr, $cfg['user'], $cfg['password'] );
+            $conn = new PDO( $connstr, $cfg['user'], $cfg['password'] );
 
         }
+
+        if( $conn ) {
+            $conn->setAttribute( PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC );
+        }
+
+        $this->connections[$dbname] = $conn;
+
     }
 
     public function get( $dbname = '' ) {
