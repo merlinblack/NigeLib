@@ -1,17 +1,21 @@
 <?php namespace NigeLib;
 
-use \ArrayAccess;
+use \Symfony\Component\Yaml\Yaml;
 
-class Config extends Singleton implements ArrayAccess {
+class Config extends Singleton {
     private $basedir;
     private $commondir;
     private $environment;
     private $config = null;
+    private $useYAML = false;
 
     public function init( $basedir, $environment, $commondir = '' ) {
         $this->basedir = $basedir;
         $this->environment = $environment;
         $this->commondir = $commondir;
+        if( class_exists( 'Symfony\Component\Yaml\Yaml' ) ) {
+            $this->useYAML = true;
+        }
     }
 
     public function reload() { $this->load(); }
@@ -49,9 +53,24 @@ class Config extends Singleton implements ArrayAccess {
         // $directory is inside a Phar file.
         $di = new \DirectoryIterator( $directory );
         foreach( $di as $file ) {
+            $options = null;
+
             if( substr($file,-4) === '.php' ) {
                 $key = basename( $file, '.php' );
                 $options = include( $directory . DIRECTORY_SEPARATOR . $file );
+            }
+
+            if( $this->useYAML && substr( $file, -4 ) == '.yml' ) {
+                $key = basename( $file, '.yml' );
+                $options = Yaml::parse( file_get_contents( $directory . DIRECTORY_SEPARATOR . $file ) );
+            }
+
+            if( $this->useYAML && substr( $file, -5 ) == '.yaml' ) {
+                $key = basename( $file, '.yaml' );
+                $options = Yaml::parse( file_get_contents( $directory . DIRECTORY_SEPARATOR . $file ) );
+            }
+
+            if( $options ) {
                 if( ! isset( $this->config[ $key ] ) ) {
                     $this->config[ $key ] = array();
                 }
@@ -62,24 +81,17 @@ class Config extends Singleton implements ArrayAccess {
 
     public function dump() {
         Console::output( "Configuration for {$this->environment} environment\n", Console::DEBUG );
-        Console::print_r( $this->config, Console::DEBUG );
+        Console::debug( $this->config );
     }
 
-    public function offsetSet( $offset, $value ) {
-    }
-
-    public function offsetUnset( $offset ) {
-    }
-
-    public function offsetExists( $offset ) {
-        return $this->get( $offset ) !== null;
-    }
-
-    public function offsetGet( $offset ) {
-        return $this->get( $offset );
+    public function __invoke( $index ) {
+        return $this->get( $index );
     }
 
     public function get( $index, $default = null ) {
+        if( ! isset($this) ) {   // Called statically
+            return self::getSingleton()->get( $index, $default );
+        }
 
         if( $this->config == null ) {
             $this->load();

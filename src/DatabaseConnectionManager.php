@@ -22,23 +22,41 @@ class DatabaseConnectionManager extends Singleton {
         $cfg = Config::getSingleton()->get( $this->configKey );
 
         $cfg = $cfg[$dbname];
+        if( ! $cfg ) {
+            throw new \Exception( "No configuration found for connection '$dbname'" );
+        }
 
         switch( $cfg['driver'] ) {
 
         case 'pgsql':
-            $connstr = "pgsql:host={$cfg['host']} dbname={$cfg['database']}";
+        case 'mysql':
+            if( ! isset( $cfg['additional_dsn'] ) ) {
+                $cfg['additional_dsn'] = '';
+            }
+            $connstr = "{$cfg['driver']}:host={$cfg['host']} dbname={$cfg['database']} {$cfg['additional_dsn']}";
+            if( isset($cfg['port'] ) ) {
+                $connstr .= 'port=' . $cfg['port'];
+            }
             break;
 
-        case 'sqlite';
-            // TODO:
+        case 'sqlite':
+            $connstr = "sqlite:{$cfg['filename']}";
             break;
+
+        default:
+            throw new \Exception( "Unsupported driver '{$cfg['driver']} given for connection '$dbname'." );
+        }
+
+        if( ! isset( $cfg['user'] ) ) {
+            $cfg['user'] = '';
+        }
+        if( ! isset( $cfg['password'] ) ) {
+            $cfg['password'] = '';
         }
 
         if( class_exists( "Aura\Sql\ExtendedPdo" ) ) {
 
             $conn = new ExtendedPdo( $connstr, $cfg['user'], $cfg['password'] );
-
-            $this->connections[$dbname] = $conn;
 
             if( isset( $cfg['profiling'] ) && $cfg['profiling'] == true ) {
                 $conn->setProfiler( new Profiler );
@@ -47,12 +65,23 @@ class DatabaseConnectionManager extends Singleton {
 
         } else {
 
-            $this->connections[$dbname] = new PDO( $connstr, $cfg['user'], $cfg['password'] );
+            $conn = new PDO( $connstr, $cfg['user'], $cfg['password'] );
 
         }
+
+        if( $conn ) {
+            $conn->setAttribute( PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC );
+        }
+
+        $this->connections[$dbname] = $conn;
+
     }
 
     public function get( $dbname = '' ) {
+
+        if( ! isset($this) ) {
+            return self::getSingleton()->get( $dbname );
+        }
 
         if( $dbname == '' ) {
             $dbname = Config::getSingleton()->get( $this->defaultDbKey );
@@ -69,7 +98,7 @@ class DatabaseConnectionManager extends Singleton {
     }
 
     public function __destruct() {
-        if( class_exists( "Aura\Sql\ExtendedPdo" ) ) {
+        if( class_exists( "Aura\Sql\ExtendedPdo", false ) ) {
 
             $cfg = Config::getSingleton();
 

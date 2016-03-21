@@ -1,34 +1,42 @@
 <?php
 
 // Load console class for autoloader?
-
-$use_console = false;
+if( ! isset( $autoloader_use_console ) ) {
+    $autoloader_use_console = false;
+}
 
 
 // Optional mapping of Namespace to directories.
-$namespace_mapping = array(
+$autoload_namespace_mapping = array(
     'NigeLib' => 'src',
     'adLDAP' => 'adLDAP/lib/adLDAP',
     'Aura\Sql' => 'aura/Aura.Sql/src',
 );
 
-if( $use_console ) {
+$autoload_classes_not_found = array();
+
+if( $autoloader_use_console ) {
     require( 'src/Console.php' );
 }
 
-function PSR0_autoload($className)
+function PSR0_autoload($name)
 {
-    global $use_console;
-    global $namespace_mapping;
+    global $autoloader_use_console;
+    global $autoload_namespace_mapping;
+    global $autoload_classes_not_found;
 
-    $className = ltrim($className, '\\');
+    if( isset( $autoload_classes_not_found[$name] ) ) {
+        return;
+    }
+
+    $className = ltrim($name, '\\');
     $fileName  = '';
     $namespace = '';
     if ($lastNsPos = strripos($className, '\\')) {
         $namespace = substr($className, 0, $lastNsPos);
         $className = substr($className, $lastNsPos + 1);
-        if( isset( $namespace_mapping[$namespace] ) ) {
-            $path = $namespace_mapping[$namespace];
+        if( isset( $autoload_namespace_mapping[$namespace] ) ) {
+            $path = $autoload_namespace_mapping[$namespace];
         } else {
             $path = $namespace;
         }
@@ -36,13 +44,16 @@ function PSR0_autoload($className)
     }
     $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
 
-    if( $use_console ) {
-        NigeLib\Console::output( "Loading: $fileName for class $className in $namespace" );
+    if( $autoloader_use_console ) {
+        NigeLib\Console::output( "Autoloader: Including $fileName for class $className in $namespace" );
     }
 
     $found = @include $fileName;
-    if( !$found && $use_console ) {
-        NigeLib\Console::output( "Loading: $fileName does not exist." );
+    if( !$found ) {
+        $autoload_classes_not_found[$name] = true;
+        if( $autoloader_use_console ) {
+            NigeLib\Console::output( "Autoloader: $fileName does not exist." );
+        }
     }
 }
 
