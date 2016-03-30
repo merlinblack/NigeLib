@@ -35,7 +35,7 @@ class DatabaseConnectionManager extends Singleton {
             }
             $connstr = "{$cfg['driver']}:host={$cfg['host']} dbname={$cfg['database']} {$cfg['additional_dsn']}";
             if( isset($cfg['port'] ) ) {
-                $connstr .= 'port=' . $cfg['port'];
+                $connstr .= ' port=' . $cfg['port'];
             }
             break;
 
