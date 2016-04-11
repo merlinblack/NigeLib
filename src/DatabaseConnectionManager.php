@@ -1,4 +1,4 @@
-<?php namespace Nigelib;
+<?php namespace NigeLib;
 
 // Uses Config class to get connection info.
 use \PDO;
