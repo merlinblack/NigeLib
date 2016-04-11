@@ -10,6 +10,10 @@ class Config extends Singleton {
     private $useYAML = false;
 
     public function init( $basedir, $environment, $commondir = '' ) {
+        if( ! isset( $this ) ) {
+            Config::getSingleton()->init( $basedir, $environment, $commondir );
+            return;
+        }
         $this->basedir = $basedir;
         $this->environment = $environment;
         $this->commondir = $commondir;
