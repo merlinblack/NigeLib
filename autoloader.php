@@ -17,7 +17,7 @@ if( $autoloader_use_console ) {
     require( 'src/Console.php' );
 }
 
-function PSR0_autoload($name)
+function NigeLib_PSR0_autoload($name)
 {
     global $autoloader_use_console;
     global $autoload_namespace_mapping;
@@ -46,13 +46,15 @@ function PSR0_autoload($name)
         NigeLib\Console::output( "Autoloader: Including $fileName for class $className in $namespace" );
     }
 
-    $found = @include $fileName;
-    if( !$found ) {
+    if( ! file_exists( $fileName ) ) {
         $autoload_classes_not_found[$name] = true;
         if( $autoloader_use_console ) {
             NigeLib\Console::output( "Autoloader: $fileName does not exist." );
         }
+        return;
     }
+    
+    include $fileName;
 }
 
-spl_autoload_register( 'PSR0_autoload' );
+spl_autoload_register( 'NigeLib_PSR0_autoload' );

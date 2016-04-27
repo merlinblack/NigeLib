@@ -9,11 +9,7 @@ class Config extends Singleton {
     private $config = null;
     private $useYAML = false;
 
-    public function init( $basedir, $environment, $commondir = '' ) {
-        if( ! isset( $this ) ) {
-            Config::getSingleton()->init( $basedir, $environment, $commondir );
-            return;
-        }
+    public function init( $basedir, $environment = null, $commondir = null ) {
         $this->basedir = $basedir;
         $this->environment = $environment;
         $this->commondir = $commondir;
@@ -29,14 +25,16 @@ class Config extends Singleton {
         // This should contain things like database connection info for multiple
         // applications.
 
-        if( $this->commondir != '' ) {
+        if( $this->commondir != null ) {
             $this->loadfiles( $this->commondir );
 
             // Environment override for common settings.
             //
-            $envdir = $this->commondir . DIRECTORY_SEPARATOR . $this->environment;
-            if( file_exists( $envdir ) ) {
-                $this->loadfiles( $envdir );
+            if( $this->environment != null ) {
+                $envdir = $this->commondir . DIRECTORY_SEPARATOR . $this->environment;
+                if( file_exists( $envdir ) ) {
+                    $this->loadfiles( $envdir );
+                }
             }
         }
 
@@ -46,32 +44,31 @@ class Config extends Singleton {
 
         // Environment override for local configuration
         //
-        $envdir = $this->basedir . DIRECTORY_SEPARATOR . $this->environment;
-        if( file_exists( $envdir ) ) {
-            $this->loadfiles( $envdir );
+        if( $this->environment != null ) {
+            $envdir = $this->basedir . DIRECTORY_SEPARATOR . $this->environment;
+            if( file_exists( $envdir ) ) {
+                $this->loadfiles( $envdir );
+            }
         }
     }
 
     private function loadfiles( $directory ) {
-        // Use directory iterator, and substr instead of glob, in case
+        // Use directory iterator, instead of glob, in case
         // $directory is inside a Phar file.
         $di = new \DirectoryIterator( $directory );
         foreach( $di as $file ) {
             $options = null;
+            $ext = pathinfo( $file, PATHINFO_EXTENSION );
+            $key = pathinfo( $file, PATHINFO_FILENAME );
 
-            if( substr($file,-4) === '.php' ) {
-                $key = basename( $file, '.php' );
+            if( $ext === 'php' ) {
                 $options = include( $directory . DIRECTORY_SEPARATOR . $file );
             }
 
-            if( $this->useYAML && substr( $file, -4 ) == '.yml' ) {
-                $key = basename( $file, '.yml' );
-                $options = Yaml::parse( file_get_contents( $directory . DIRECTORY_SEPARATOR . $file ) );
-            }
-
-            if( $this->useYAML && substr( $file, -5 ) == '.yaml' ) {
-                $key = basename( $file, '.yaml' );
-                $options = Yaml::parse( file_get_contents( $directory . DIRECTORY_SEPARATOR . $file ) );
+            if( $this->useYAML ) {
+                if( $ext === 'yml' || $ext === 'yaml' ) {
+                    $options = Yaml::parse( file_get_contents( $directory . DIRECTORY_SEPARATOR . $file ) );
+                }
             }
 
             if( $options ) {
@@ -84,7 +81,7 @@ class Config extends Singleton {
     }
 
     public function dump() {
-        Console::output( "Configuration for {$this->environment} environment\n", Console::DEBUG );
+        Console::debug( "Configuration for {$this->environment} environment\n" );
         Console::debug( $this->config );
     }
 
@@ -93,10 +90,6 @@ class Config extends Singleton {
     }
 
     public function get( $index, $default = null ) {
-        if( ! isset($this) ) {   // Called statically
-            return self::getSingleton()->get( $index, $default );
-        }
-
         if( $this->config == null ) {
             $this->load();
         }

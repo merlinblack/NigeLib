@@ -20,6 +20,9 @@ class DatabaseConnectionManager extends Singleton {
     private function initConnection( $dbname ) {
 
         $cfg = Config::getSingleton()->get( $this->configKey );
+        if( ! $cfg ) {
+            throw new \Exception( "No configuration found for '{$this->configKey}'" );
+        }
 
         $cfg = $cfg[$dbname];
         if( ! $cfg ) {
@@ -78,10 +81,6 @@ class DatabaseConnectionManager extends Singleton {
     }
 
     public function get( $dbname = '' ) {
-
-        if( ! isset($this) ) {
-            return self::getSingleton()->get( $dbname );
-        }
 
         if( $dbname == '' ) {
             $dbname = Config::getSingleton()->get( $this->defaultDbKey );

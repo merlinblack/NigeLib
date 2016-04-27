@@ -8,7 +8,7 @@ class Singleton {
     protected function __clone() {
     }
     protected function __wakeup() {
-        throw new Exception("Can not unserialise a singleton");
+        throw new \Exception("Can not unserialise a singleton");
     }
 
     final public static function getSingleton() {
