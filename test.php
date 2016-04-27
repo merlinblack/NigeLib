@@ -3,24 +3,22 @@
 $autoloader_use_console = true;
 require_once( 'autoloader.php' );
 
-use NigeLib\Config;
+use NigeLib\ConfigFacade as Config;
+use NigeLib\DatabaseConnectionManagerFacade as DB;
 use NigeLib\Console;
 use NigeLib\Environment;
-use NigeLib\DatabaseConnectionManager;
-use NigeLib\SimpleTemplate;
 
 Console::important( 'Test script for NigeLib.' );
 
-$cfg = Config::getSingleton();
-$cfg->init( 'localconfig', Environment::getEnvironmentName('envmap.php'), 'config' );
+Config::init( 'localconfig', Environment::getEnvironmentName('envmap.php'), 'config' );
 
-$cfg->reload();
-$cfg->dump();
+Config::reload();
+Config::dump();
 
-Console::debug( DatabaseConnectionManager::get('temp') );
+Console::debug( DB::get('temp') );
 
-// __invoke style
+// Invoke style...
+$cfg = NigeLib\Config::getSingleton();
 Console::info( $cfg('app.logfile') );
 
-// Weird call a non static like a static
 Console::info( Config::get('app.logfile') );
