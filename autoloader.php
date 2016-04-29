@@ -47,9 +47,10 @@ function NigeLib_PSR0_autoload($name)
     }
 
     // Allow globally installed libraries to be found (in the include path).
-    $fileName = stream_resolve_include_path( $fileName );
+    // and check if file exists.
+    $resolved = stream_resolve_include_path( $fileName );
 
-    if( ! file_exists( $fileName ) ) {
+    if( ! $resolved ) {
         $autoload_classes_not_found[$name] = true;
         if( $autoloader_use_console ) {
             NigeLib\Console::output( "Autoloader: $fileName does not exist." );
