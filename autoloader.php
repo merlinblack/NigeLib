@@ -46,6 +46,9 @@ function NigeLib_PSR0_autoload($name)
         NigeLib\Console::output( "Autoloader: Including $fileName for class $className in $namespace" );
     }
 
+    // Allow globally installed libraries to be found (in the include path).
+    $fileName = stream_resolve_include_path( $fileName );
+
     if( ! file_exists( $fileName ) ) {
         $autoload_classes_not_found[$name] = true;
         if( $autoloader_use_console ) {
