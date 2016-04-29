@@ -65,6 +65,10 @@ class Config extends Singleton {
                 $options = include( $directory . DIRECTORY_SEPARATOR . $file );
             }
 
+            if( $ext === 'json' ) {
+                $options = json_decode( file_get_contents( $directory . DIRECTORY_SEPARATOR . $file ), true );
+            }
+
             if( $this->useYAML ) {
                 if( $ext === 'yml' || $ext === 'yaml' ) {
                     $options = Yaml::parse( file_get_contents( $directory . DIRECTORY_SEPARATOR . $file ) );
