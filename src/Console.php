@@ -20,6 +20,8 @@ class Console {
     );
 
     private static $level = self::INFO;
+    private static $html = '';
+    private static $outputOnDestruct = null;
 
     public static function setLevel( $level ) {
         self::$level = $level;
@@ -37,13 +39,19 @@ class Console {
             } else {
                 $str .= "\n";
             }
+
+            echo $str;
+
         } else {
+            if( ! self::$outputOnDestruct ) {
+                self::$outputOnDestruct = new ConsoleWriteOnDestruct;
+            }
             $color = self::$html_colors[$level];
             $str = str_replace( "\n", '<br/>', htmlentities( $str ));
             $str = "<pre class='console $color'>" . $str . '</pre>' . "\n";
+            self::$html .= $str;
         }
 
-        echo $str;
     }
     public static function info( $mixed ) {
         self::output( print_r( $mixed, true ), self::INFO );
@@ -56,6 +64,38 @@ class Console {
     }
     public static function important( $mixed ) {
         self::output( print_r( $mixed, true ), self::IMPORTANT );
+    }
+    public static function getHtml() {
+        return self::$html;
+    }
+    public static function clearHtml() {
+        self::$html = '';
+    }
+    public static function disableHtmlFlush() {
+        if( ! self::$outputOnDestruct ) {
+            self::$outputOnDestruct = new ConsoleWriteOnDestruct;
+        }
+        self::$outputOnDestruct->disable();
+    }
+}
+
+// In the case of a web page rather than a terminal or file output, this
+// automatically writes all Console output to a web page at the end of a
+// script when this is destructed.
+//
+// For more control over output, call Console::disableHtmlFlush() and
+// retrieve the output with Console::getHtml()
+//
+class ConsoleWriteOnDestruct {
+    private $disable = false;
+
+    public function disable() {
+        $this->disable = true;
+    }
+    public function __destruct () {
+        if( $this->disable === false ) {
+            echo Console::getHtml();
+        }
     }
 }
 

@@ -11,7 +11,7 @@ class Singleton {
         throw new Exception("Can not unserialise a singleton");
     }
 
-    public static function getSingleton() {
+    final public static function getSingleton() {
         $subclass = get_called_class();
         if( ! isset( self::$_instances[$subclass] ) ) {
             self::$_instances[$subclass] = new static;
