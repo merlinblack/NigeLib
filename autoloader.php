@@ -7,7 +7,7 @@ if( ! isset( $autoloader_use_console ) ) {
 
 
 // Optional mapping of Namespace to directories.
-$namespace_mapping = array(
+$autoload_namespace_mapping = array(
     'NigeLib'            => 'src',
     'Adldap'             => 'adLDAP/src',
     'Adldap\Interfaces'  => 'adLDAP/src/Interfaces',
