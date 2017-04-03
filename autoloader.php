@@ -4,12 +4,18 @@
 
 $use_console = false;
 
-
 // Optional mapping of Namespace to directories.
 $namespace_mapping = array(
-    'NigeLib' => 'src',
-    'adLDAP' => 'adLDAP/lib/adLDAP',
-    'Aura\Sql' => 'aura/Aura.Sql/src',
+    'NigeLib'            => 'src',
+    'Adldap'             => 'adLDAP/src',
+    'Adldap\Interfaces'  => 'adLDAP/src/Interfaces',
+    'Adldap\Connections' => 'adLDAP/src/Connections',
+    'Adldap\Traits'      => 'adLDAP/src/Traits',
+    'Adldap\Exceptions'  => 'adLDAP/src/Exceptions',
+    'Adldap\Classes'     => 'adLDAP/src/Classes',
+    'Adldap\Objects'     => 'adLDAP/src/Objects',
+    'Adldap\Query'       => 'adLDAP/src/Query',
+    'Aura\Sql'           => 'aura/Aura.Sql/src',
 );
 
 if( $use_console ) {
