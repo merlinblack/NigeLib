@@ -72,7 +72,9 @@ $temp_pdo = DB::get('temp');
 ```
 
 For the above to work you will need two more files:
+
 ###envmap.php
+
 ``` php
 <?php
 // Environment map.
@@ -89,6 +91,7 @@ return array(
 ```
 
 ###config/database.php
+
 ``` php
 <?php
 return array(
@@ -113,4 +116,4 @@ return array(
 );
 ```
 
-![Usefull tip](https://dl.dropboxusercontent.com/u/7988124/ForumBar-Unicorn.png)
+![Usefull tip](https://www.dropbox.com/s/j32yus81dejmx8n/ForumBar-Unicorn.png?dl=0)
