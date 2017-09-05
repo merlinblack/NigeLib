@@ -1,4 +1,4 @@
-#NigeLib
+# NigeLib
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 
@@ -73,7 +73,7 @@ $temp_pdo = DB::get('temp');
 
 For the above to work you will need two more files:
 
-###envmap.php
+### envmap.php
 
 ``` php
 <?php
@@ -90,7 +90,7 @@ return array(
 );
 ```
 
-###config/database.php
+### config/database.php
 
 ``` php
 <?php
@@ -115,5 +115,3 @@ return array(
     ),
 );
 ```
-
-![Usefull tip](https://www.dropbox.com/s/j32yus81dejmx8n/ForumBar-Unicorn.png?dl=0)
