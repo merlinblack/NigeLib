@@ -31,13 +31,6 @@ StaticDelegate can be extended to give convenient static access to an instance o
 a class, as long as there is some way of retrieving the instance. Two static classes
 are supplied - ConfigFacade, and DatabaseConnectionManagerFacade.
 
-Headlinks is a small class for managing Javascript and CSS links. It adds the
-time stamp of the file modification to the file name, causing the users browser
-to reload the file if it has changed. Dependencies can be defined between files,
-to not only make sure that a dependency is included as well, but also included
-beforehand. To use this you will need to use mod_rewrite or equivalent with
-something like the contents of src/Headlinks.htaccess.
-
 SimpleTemplate is a class to help with rendering simple templates in the form of
 PHP code. It does not try to be a templating engine, however for basic separation
 of view and model it does the job.
