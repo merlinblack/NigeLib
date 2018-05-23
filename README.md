@@ -1,6 +1,6 @@
 # NigeLib
 
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)![Packagist](https://img.shields.io/packagist/v/merlinblack/nigelib.svg)
 
 A tiny PHP library for use in tiny little web apps.
 
