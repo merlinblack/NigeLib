@@ -1,5 +1,9 @@
 # NigeLib
 
+1st August 2022
+_ARCHIVED_ - This is pretty old. I'm not maintaining it, and no doubt there are better ways to do these things now.
+
+
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)![Packagist](https://img.shields.io/packagist/v/merlinblack/nigelib.svg)
 
 A tiny PHP library for use in tiny little web apps.
